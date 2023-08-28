@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "../styles/app.css";
 import axios from "axios";
-
 import { useEffect, useState } from "react";
 function App() {
   const [contactList, setContactList] = useState([]);
@@ -13,7 +12,9 @@ function App() {
   const [phone, setPhone] = useState("");
   useEffect(() => {
     const fetchContact = async () => {
-      const response = await axios.get(`http://localhost:8000/api/v1/contact`);
+      const response = await axios.get(
+        "https://contact-api-aqwd.onrender.com/api/v1/contact"
+      );
       const data = response.data.data.contact;
       // console.log("response", data);
       setContactList(data);
@@ -34,7 +35,7 @@ function App() {
     try {
       const deleteContact = async () => {
         const response = await axios.delete(
-          `http://localhost:8000/api/v1/contact/${id}`
+          `https://contact-api-aqwd.onrender.com/api/v1/contact/${id}`
         );
         const data = response;
         console.log("data", data);
@@ -51,7 +52,7 @@ function App() {
     console.log("first", contactList);
     const addNewContact = async () => {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/contact/create",
+        "https://contact-api-aqwd.onrender.com/api/v1/contact/create",
         newContact
       );
     };
