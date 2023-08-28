@@ -51,7 +51,7 @@ function App() {
     setContactList([newContact, ...contactList]);
     console.log("first", contactList);
     const addNewContact = async () => {
-      const response = await axios.put(
+      const response = await axios.post(
         "https://contact-api-aqwd.onrender.com/api/v1/contact/create",
         newContact
       );
