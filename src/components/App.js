@@ -103,7 +103,7 @@ function App() {
           +
         </Button>
       </div>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <ContactList contactList={contactList} deleteContact={deleteContact} />
     </div>
   );
