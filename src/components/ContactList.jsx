@@ -15,7 +15,6 @@ function ContactList({ contactList, deleteContact }) {
   return (
     <div className="ContactList">
       {currentContacts.map((contact) => {
-        console.log("currentContacts", currentContacts);
         return (
           <div style={{ width: "100%" }} key={contact._id}>
             <ContactCard contact={contact} deleteContact={deleteContact} />

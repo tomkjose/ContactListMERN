@@ -1,25 +1,23 @@
-import AddContact from "./AddContact";
 import ContactList from "./ContactList";
-import SearchBar from "./SearchBar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "../styles/app.css";
 import axios from "axios";
-
+import { API } from "../utils/index";
 import { useEffect, useState } from "react";
 function App() {
   const [contactList, setContactList] = useState([]);
+  const [tempList, setTempList] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   useEffect(() => {
     const fetchContact = async () => {
-      const response = await axios.get(
-        "https://contact-api-aqwd.onrender.com/api/v1/contact"
-      );
+      const response = await axios.get(`${API}/api/v1/contact`);
       const data = response.data.data.contact;
       // console.log("response", data);
       setContactList(data);
+      setTempList(data);
       // console.log("contactList", contactList);
     };
     try {
@@ -32,11 +30,10 @@ function App() {
   const deleteContact = (id) => {
     const newContactList = contactList.filter((contact) => contact._id !== id);
     setContactList(newContactList);
+    setTempList(newContactList);
     try {
       const deleteContact = async () => {
-        const response = await axios.delete(
-          `https://contact-api-aqwd.onrender.com/api/v1/contact/${id}`
-        );
+        const response = await axios.delete(`${API}/api/v1/contact/${id}`);
         const data = response;
         console.log("data", data);
       };
@@ -52,14 +49,27 @@ function App() {
     console.log("first", contactList);
     const addNewContact = async () => {
       const response = await axios.post(
-        "https://contact-api-aqwd.onrender.com/api/v1/contact/create",
+        `${API}/api/v1/contact/create`,
         newContact
       );
     };
+
     try {
       addNewContact();
     } catch (error) {
       console.log("error", error);
+    }
+  };
+
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    if (query.length === 0) {
+      setContactList(tempList);
+    } else {
+      const filteredContact = contactList.filter((contact) =>
+        contact.name.toLowerCase().includes(query)
+      );
+      setContactList(filteredContact);
     }
   };
   return (
@@ -103,7 +113,16 @@ function App() {
           +
         </Button>
       </div>
-      {/* <SearchBar /> */}
+      <div className="SearchBarContainer">
+        <TextField
+          id="outlined-basic"
+          label="Search..."
+          className="SearchBar"
+          variant="outlined"
+          name="query"
+          onChange={(e) => handleSearch(e)}
+        />
+      </div>
       <ContactList contactList={contactList} deleteContact={deleteContact} />
     </div>
   );
